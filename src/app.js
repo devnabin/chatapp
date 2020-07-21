@@ -1,35 +1,45 @@
 const path = require("path");
 const express = require("express");
 const http = require("http");
-//shocket io
+
+//shocket io library import
 const shocketio = require("socket.io");
 
-app = express();
+const app = express();
+
+//Serving static files
+const publicPath = path.join(__dirname, "../public");
+app.use(express.static(publicPath));
+
+//Serving index html file
+app.get("/", (req, res) => {
+  res.render("index");
+});
 
 //creating new server and passing app
 const server = http.createServer(app);
 const io = shocketio(server);
 
-const publicPath = path.join(__dirname, "../public");
-
-app.use(express.static(publicPath));
-
-app.get("/", (req, res) => {
-  res.render("index");
-});
-
-
-
+//all the logic of socket is here
+//io.on is the main method of all to make connection
 io.on("connection", (socket) => {
   console.log("user is connected");
+  /*
+  tips:-
+  -->servers emit then from frontend we have to use socket.on method
+  -->but when frontend emit we have to user secket.on method on server
+*/
+
+  //Server emit
   socket.emit("welcome", "welcome to the chat");
 
-  socket.on('msg' ,(arg)=>{
-      io.emit('msg' , arg)
-  })
+  //defense code when browser emit
+  socket.on("msg", (arg) => {
+    io.emit("msg", arg);
+  });
 });
 
-
+//listing server on port 3000
 server.listen(3000, () => {
   console.log("app lis listern");
 });

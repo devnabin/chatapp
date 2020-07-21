@@ -40,6 +40,13 @@ io.on("connection", (socket) => {
   });
 
 
+
+  //defense code for location
+  socket.on('location', (cords)=>{
+    io.emit('message' , `https://google.com/maps?q=${cords.latitude},${cords.longitude}`)
+  })
+
+  //user user disconnet or close the browser
   socket.on('disconnect' ,()=>{
     io.emit('message' , 'A user is disconnected')
   })
@@ -55,3 +62,4 @@ tips :-
 server.listen(3000, () => {
   console.log("app lis listern");
 });
+

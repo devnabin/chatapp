@@ -31,12 +31,24 @@ io.on("connection", (socket) => {
 */
 
   //Server emit
-  socket.emit("welcome", "welcome to the chat");
+  socket.emit("message", "welcome to the chat");
+  socket.broadcast.emit('message' , 'A user is joined')
 
   //defense code when browser emit
   socket.on("msg", (arg) => {
     io.emit("msg", arg);
   });
+
+
+  socket.on('disconnect' ,()=>{
+    io.emit('message' , 'A user is disconnected')
+  })
+/* 
+tips :-
+1. socket.emit for the perticular user
+2. io.emit for sending to everone
+3. socket.brocast.emit for all user expect that perticular user
+*/
 });
 
 //listing server on port 3000

@@ -3,6 +3,7 @@ const express = require("express");
 const http = require("http");
 const Filter = require("bad-words");
 
+const PORT = process.env.PORT || 3000;
 //shocket io library import
 const shocketio = require("socket.io");
 
@@ -73,6 +74,6 @@ Acknowledgements is simple as call back
 });
 
 //listing server on port 3000
-server.listen(3000, () => {
-  console.log("app lis listern");
+server.listen(PORT, () => {
+  console.log(`App is listening on port ${PORT}`);
 });

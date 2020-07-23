@@ -4,6 +4,7 @@ const http = require("http");
 const Filter = require("bad-words");
 
 const PORT = process.env.PORT || 3000;
+
 //shocket io library import
 const shocketio = require("socket.io");
 
@@ -43,14 +44,14 @@ io.on("connection", (socket) => {
       return callback("profane is not allowed");
     }
 
-    io.emit("msg", arg);
+    io.emit("message", arg);
     callback();
   });
 
   //defense code for location
   socket.on("location", (cords, callback) => {
     io.emit(
-      "message",
+      "locationMessage",
       `https://google.com/maps?q=${cords.latitude},${cords.longitude}`
     );
     callback();

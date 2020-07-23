@@ -3,17 +3,30 @@ const $form = document.querySelector("#message-form");
 const $formButton = document.querySelector("#send-but");
 const $formInput = document.querySelector("#msg-field");
 const $locationShareBut = document.querySelector("#location-share-but");
+//messages
+const $messages = document.querySelector("#messages");
+
+//templates
+const messageTemplate = document.querySelector("#message-template").innerHTML;
+const urlTemplate = document.querySelector("#url-template").innerHTML;
 
 const socket = io();
 
 //defense code for server emit when user is connected
 socket.on("message", (message) => {
-  console.log(message);
+  // console.log(message);
+  const html = Mustache.render(messageTemplate, {
+    message,
+  });
+  $messages.insertAdjacentHTML("beforeend", html);
 });
 
-//defense code for server emit when user send a message
-socket.on("msg", (args) => {
-  console.log(args);
+socket.on("locationMessage", (url) => {
+  // console.log(url)
+  const html = Mustache.render(urlTemplate, {
+    url,
+  });
+  $messages.insertAdjacentHTML("beforeend", html);
 });
 
 //making emit from browser when we make a event

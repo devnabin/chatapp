@@ -1,0 +1,170 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto Mono", monospace;
+}
+
+html {
+  font-size: 8px;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  background-color: rgb(245, 240, 240);
+  display: flex;
+}
+
+.left{
+color : red;
+}
+
+.join{
+  color: green;
+}
+
+body .info {
+  height: 100vh;
+  width: 30%;
+  background-color: blueviolet;
+  position: relative;
+}
+
+.info #groupName {
+  text-align: center;
+  font-size: 3rem;
+  margin: 20px 0;
+  padding: 10px 0;
+  color: #fff;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.test {
+  height: 80vh;
+  padding-right: 10px;
+  overflow: hidden;
+  overflow-y: scroll;
+  position: relative;
+}
+
+.test div {
+  /* background-color: black; */
+  position: absolute;
+  width: 100%;
+  height: 4%;
+  overflow: hidden;
+}
+.test div span {
+  position: absolute;
+  top: 25%;
+  right: 0;
+}
+
+.test::-webkit-scrollbar {
+  width: 10px;
+}
+
+.test::-webkit-scrollbar-thumb {
+  /* background:rgba(216, 215, 215, 0.63); */
+  background: rgba(255, 255, 255, 0.39);
+  border-radius: 50px;
+}
+
+#online {
+  display: flex;
+  justify-content: center;
+  width: 80%;
+}
+
+#online #onlinestatus {
+  font-size: 2.4rem;
+  border-bottom: 1px solid white;
+  margin-bottom: 5px;
+  padding-bottom: 3px;
+}
+
+.info ul {
+  color: white;
+  font-size: 2rem;
+  list-style: none;
+}
+
+.info ul li {
+  margin-top: 5px;
+}
+
+/* green logo */
+.info .material-icons {
+  color: rgb(5, 219, 5);
+  font-size: 1.3rem;
+}
+
+body .chat {
+  height: 100vh;
+  width: 70%;
+  position: relative;
+}
+
+/* send button wola div  */
+.makemessage {
+  width: 100%;
+  display: flex;
+  position: absolute;
+  bottom: 5vh;
+  padding: 0 20px;
+}
+
+form {
+  width: 100%;
+  display: flex;
+}
+
+input {
+  flex-grow: 1;
+  box-shadow: 0 0 10px 2px blueviolet;
+  border-radius: 10px;
+  padding: 0 10px;
+}
+
+button,
+input {
+  background: none;
+  border: none;
+  outline: none;
+}
+
+button {
+  margin-left: 10px;
+  cursor: pointer;
+  background: blueviolet;
+  color: #fff;
+  height: 5vh;
+  width: 5vh;
+}
+
+
+/* dymaic content customization */
+
+#messages{
+  font-size: 2rem;
+  height: 85vh;
+  padding: 1vh 5vh;
+  overflow-y: scroll;
+}
+.dynamic{
+  margin-top: 5px;
+
+}
+.dynamic .name{
+  background: blueviolet;
+  color: white;
+  padding: 0 5px;
+
+}
+.dynamic .time{
+font-weight: bold;
+}

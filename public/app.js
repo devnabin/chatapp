@@ -9,25 +9,45 @@ const $messages = document.querySelector("#messages");
 //templates
 const messageTemplate = document.querySelector("#message-template").innerHTML;
 const urlTemplate = document.querySelector("#url-template").innerHTML;
+const activity = document.querySelector("#user-activity").innerHTML;
 
 const socket = io();
 
 //defense code for server emit when user is connected
-socket.on("message", (message) => {
-  // console.log(message);
+socket.on("message", ({ message, createdAt }) => {
+  console.log(message);
   const html = Mustache.render(messageTemplate, {
     message,
+    createdAt: moment().format("HH:mm a"),
+    // for moment visit https://momentjs.com/docs/
   });
   $messages.insertAdjacentHTML("beforeend", html);
 });
 
-socket.on("locationMessage", (url) => {
+socket.on("userActivity", ({ message, createdAt }) => {
+  let html;
+  html = Mustache.render(activity, {
+    message,
+    createdAt: moment().format("HH:mm a"),
+  });
+  if (message.includes("left the chat")) {
+    html = html.replace("%activitycolor%", "left");
+  } else if (message.includes("joined the chat!")) {
+    html = html.replace("%activitycolor%", "join");
+  }
+  $messages.insertAdjacentHTML("beforeend", html);
+});
+
+
+socket.on("locationMessage", ({ url, createdAt }) => {
   // console.log(url)
   const html = Mustache.render(urlTemplate, {
     url,
+    createdAt: moment().format("HH:mm a"),
   });
   $messages.insertAdjacentHTML("beforeend", html);
 });
+
 
 //making emit from browser when we make a event
 $form.addEventListener("submit", (e) => {
@@ -48,6 +68,7 @@ $form.addEventListener("submit", (e) => {
   });
   e.target.elements.msg.value = "";
 });
+
 
 $locationShareBut.addEventListener("click", () => {
   if (!navigator.geolocation) {

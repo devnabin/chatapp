@@ -2,6 +2,10 @@ const path = require("path");
 const express = require("express");
 const http = require("http");
 const Filter = require("bad-words");
+const {
+  message: generateMessage,
+  url: generateUrl,
+} = require("./utils/message");
 
 const PORT = process.env.PORT || 3000;
 
@@ -34,8 +38,8 @@ io.on("connection", (socket) => {
 */
 
   //Server emit
-  socket.emit("message", "welcome to the chat");
-  socket.broadcast.emit("message", "A user is joined");
+  socket.emit("message", generateMessage("Welcome to chat app"));
+  socket.broadcast.emit("userActivity", generateMessage("joined the chat!"));
 
   //defense code when browser emit
   socket.on("msg", (arg, callback) => {
@@ -44,7 +48,7 @@ io.on("connection", (socket) => {
       return callback("profane is not allowed");
     }
 
-    io.emit("message", arg);
+    io.emit("message", generateMessage(arg));
     callback();
   });
 
@@ -52,14 +56,16 @@ io.on("connection", (socket) => {
   socket.on("location", (cords, callback) => {
     io.emit(
       "locationMessage",
-      `https://google.com/maps?q=${cords.latitude},${cords.longitude}`
+      generateUrl(
+        `https://google.com/maps?q=${cords.latitude},${cords.longitude}`
+      )
     );
     callback();
   });
 
   //user user disconnet or close the browser
   socket.on("disconnect", () => {
-    io.emit("message", "A user is disconnected");
+    io.emit("userActivity", generateMessage("left the chat"));
   });
   /* 
 tips :-

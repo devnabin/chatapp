@@ -1,34 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" type="stylesheet/css" href="/style.css" />
+    <link rel="stylesheet" href="room.css" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <title>Document</title>
   </head>
   <body>
-    <h1>Chat application</h1>
+    <!-- <h1>Chat application</h1> -->
+    <div class="info">
+      <div id="groupName">We4Techy</div>
+      <div id="online">
+        <ul>
+          <li id="onlinestatus">Online (<span>5</span>)</li>
+          <div class="test">
+            <ul>
+              <li>
+                <span>Nabin Bhandari</span>
+                <span class="material-icons">
+                  stop_circle
+                </span>
+              </li>
+              <li>
+                <span>Bi shyam</span>
+                <span class="material-icons">
+                  stop_circle
+                </span>
+              </li>
+              <li>
+                <span>sdfsfdbin</span>
+                <span class="material-icons">
+                  stop_circle
+                </span>
+              </li>
 
-    <!-- div for rendring dynamic content -->
-    <div id="messages"></div>
+              <li>
+                <div>
+                  arfi sdfsdfsdf
+                  <span class="material-icons">
+                    stop_circle
+                  </span>
+                </div>
+              </li>
 
-    <form action="" id="message-form">
-      <input type="text" name="msg" id="msg-field" />
-      <button id="send-but">send</button>
-    </form>
-    <button id="location-share-but">Share Your Location</button>
+              <li>
+                <div>
+                  arfi sdfsdfsdf
+                  <span class="material-icons">
+                    stop_circle
+                  </span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </ul>
+      </div>
+    </div>
+    <div class="chat">
+      <!-- div for rendring dynamic content -->
+      <div id="messages"></div>
 
+      <div class="makemessage">
+        <form action="" id="message-form">
+          <input type="text" placeholder="Reply" name="msg" id="msg-field" />
+          <button id="send-but">
+            <i class="fa fa-send"></i>
+          </button>
+        </form>
+        <div>
+          <button id="location-share-but">
+            <i class="material-icons" style="font-size: 36px;">location_on</i>
+          </button>
+        </div>
+      </div>
+    </div>
     <!-- Template for message -->
     <script id="message-template" type="text/html">
-      <div>
-      <p>{{message}}</p>
+      <div class="dynamic">
+        <p><span class="name">Nabin Bhandari</span><span class="time"> {{createdAt}} </span></p>
+      <p>
+        {{message}}
+      </p>
       </div>
     </script>
 
     <!-- template for my loaction -->
     <script id="url-template" type="text/html">
-      <div>
-      <a href="{{url}}" target="_blank">my location</a>
+        <div class="dynamic">
+        <p><span class="name">Nabin Bhandari</span><span class="time"> {{createdAt}} </span></p>
+      <p> <a href="{{url}}" target="_blank">my location</a></p>
+        </div>
+    </script>
+
+    <!-- USER  JOIN LEFt -->
+    <script id="user-activity" type="text/html">
+      <div class="dynamic">
+      <p class="%activitycolor%"><span>Nabin Bhandari  </span> {{message}} <span class="time"> {{createdAt}} </span></p>
       </div>
     </script>
 

@@ -89,3 +89,11 @@ $locationShareBut.addEventListener("click", () => {
     });
   });
 });
+
+
+//===================================================
+
+//options
+const userData = Qs.parse(location.search, {ignoreQuaryPrefix : true})
+
+socket.emit('join' , userData)

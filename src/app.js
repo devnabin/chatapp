@@ -37,9 +37,30 @@ io.on("connection", (socket) => {
   -->but when frontend emit we have to user secket.on method on server
 */
 
+ //========================= rooms  =====================================================
+ //========================= rooms  =====================================================
+socket.on('join' , ({username , room})=>{
+socket.join(room)
+
+/*
+here we have till now :-
+1. socket.emit for specific
+2. io.emit for all user and
+3. socket.brocast.emit for all user except spcific one
+/\/\/\/\/\/\/\/\/\/\/\/\ *********************************
+now we are using rooms in sockets so we have more on the list
+1. io.to.emit for all user at that room
+2. socket.brocast.to.emit this is for all user except specific one in the room 
+*/
+
   //Server emit
   socket.emit("message", generateMessage("Welcome to chat app"));
-  socket.broadcast.emit("userActivity", generateMessage("joined the chat!"));
+  socket.broadcast.to(room).emit("userActivity", generateMessage(`${username} joined the chat!`));
+
+})
+
+ //========================= rooms  =====================================================
+ //========================= rooms  =====================================================
 
   //defense code when browser emit
   socket.on("msg", (arg, callback) => {

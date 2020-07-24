@@ -43,8 +43,13 @@ io.on("connection", (socket) => {
 
   //========================= rooms  =====================================================
   //========================= rooms  =====================================================
-  socket.on("join", ({ username, room }) => {
-    const { user } = addUser({ id: socket.id, username, room });
+  socket.on("join", ({ username, room } , callback) => {
+    const { user  , error} = addUser({ id: socket.id, username, room });
+
+          
+     if(error){
+     return callback(error)
+     }
 
     socket.join(user.room);
 
@@ -75,6 +80,8 @@ now we are using rooms in sockets so we have more on the list
         "userActivity",
         generateMessage(user.username, `${user.username} joined the chat!`)
       );
+
+      callback()
   });
 
   //========================= rooms  =====================================================

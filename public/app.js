@@ -98,4 +98,9 @@ $locationShareBut.addEventListener("click", () => {
 
 //options
 const userData = Qs.parse(location.search, { ignoreQueryPrefix : true })
-socket.emit('join' , userData)
+socket.emit('join' , userData , (log)=>{
+  if(log){
+    alert(log)
+    window.location.href ='/'
+  }
+})

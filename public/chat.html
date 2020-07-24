@@ -71,7 +71,7 @@
 
       <div class="makemessage">
         <form action="" id="message-form">
-          <input type="text" placeholder="Reply" name="msg" id="msg-field" />
+          <input type="text" placeholder="Reply" name="msg" id="msg-field" required autocomplete="off" />
           <button id="send-but">
             <i class="fa fa-send"></i>
           </button>
@@ -83,10 +83,11 @@
         </div>
       </div>
     </div>
+    
     <!-- Template for message -->
     <script id="message-template" type="text/html">
       <div class="dynamic">
-        <p><span class="name">Nabin Bhandari</span><span class="time"> {{createdAt}} </span></p>
+        <p><span class="name">{{username}}</span><span class="time"> {{createdAt}} </span></p>
       <p>
         {{message}}
       </p>
@@ -96,7 +97,7 @@
     <!-- template for my loaction -->
     <script id="url-template" type="text/html">
         <div class="dynamic">
-        <p><span class="name">Nabin Bhandari</span><span class="time"> {{createdAt}} </span></p>
+        <p><span class="name">{{username}}</span><span class="time"> {{createdAt}} </span></p>
       <p> <a href="{{url}}" target="_blank">my location</a></p>
         </div>
     </script>
@@ -104,7 +105,7 @@
     <!-- USER  JOIN LEFt -->
     <script id="user-activity" type="text/html">
       <div class="dynamic">
-      <p class="%activitycolor%"><span>Nabin Bhandari  </span> {{message}} <span class="time"> {{createdAt}} </span></p>
+      <p class="%activitycolor%"> {{message}} <span class="time"> {{createdAt}} </span></p>
       </div>
     </script>
 

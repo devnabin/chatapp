@@ -14,21 +14,23 @@ const activity = document.querySelector("#user-activity").innerHTML;
 const socket = io();
 
 //defense code for server emit when user is connected
-socket.on("message", ({ message, createdAt }) => {
+socket.on("message", ({username, message, createdAt }) => {
   console.log(message);
   const html = Mustache.render(messageTemplate, {
+   username,
     message,
-    createdAt: moment().format("HH:mm a"),
+    createdAt: moment(createdAt).format("HH:mm a"),
     // for moment visit https://momentjs.com/docs/
   });
   $messages.insertAdjacentHTML("beforeend", html);
 });
 
-socket.on("userActivity", ({ message, createdAt }) => {
+socket.on("userActivity", ({username ,  message, createdAt }) => {
   let html;
   html = Mustache.render(activity, {
+    username,
     message,
-    createdAt: moment().format("HH:mm a"),
+    createdAt: moment(createdAt).format("HH:mm a"),
   });
   if (message.includes("left the chat")) {
     html = html.replace("%activitycolor%", "left");
@@ -39,11 +41,12 @@ socket.on("userActivity", ({ message, createdAt }) => {
 });
 
 
-socket.on("locationMessage", ({ url, createdAt }) => {
+socket.on("locationMessage", ({ username ,  url, createdAt }) => {
   // console.log(url)
   const html = Mustache.render(urlTemplate, {
+    username,
     url,
-    createdAt: moment().format("HH:mm a"),
+    createdAt: moment(createdAt).format("HH:mm a"),
   });
   $messages.insertAdjacentHTML("beforeend", html);
 });
@@ -94,6 +97,5 @@ $locationShareBut.addEventListener("click", () => {
 //===================================================
 
 //options
-const userData = Qs.parse(location.search, {ignoreQuaryPrefix : true})
-
+const userData = Qs.parse(location.search, { ignoreQueryPrefix : true })
 socket.emit('join' , userData)

@@ -43,13 +43,12 @@ io.on("connection", (socket) => {
 
   //========================= rooms  =====================================================
   //========================= rooms  =====================================================
-  socket.on("join", ({ username, room } , callback) => {
-    const { user  , error} = addUser({ id: socket.id, username, room });
+  socket.on("join", ({ username, room }, callback) => {
+    const { user, error } = addUser({ id: socket.id, username, room });
 
-          
-     if(error){
-     return callback(error)
-     }
+    if (error) {
+      return callback(error);
+    }
 
     socket.join(user.room);
 
@@ -73,7 +72,6 @@ now we are using rooms in sockets so we have more on the list
       )
     );
 
-
     socket.broadcast
       .to(user.room)
       .emit(
@@ -81,7 +79,12 @@ now we are using rooms in sockets so we have more on the list
         generateMessage(user.username, `${user.username} joined the chat!`)
       );
 
-      callback()
+    io.to(user.room).emit("roomData", {
+      room: user.room,
+      users: getUserInRoom(user.room),
+    });
+
+    callback();
   });
 
   //========================= rooms  =====================================================
@@ -120,6 +123,12 @@ now we are using rooms in sockets so we have more on the list
         "userActivity",
         generateMessage(user.username, ` ${user.username} left the chat`)
       );
+
+      
+    io.to(user.room).emit('roomData' , {
+      room : user.room,
+      users : getUserInRoom(user.room)
+    } )
     }
   });
   /* 

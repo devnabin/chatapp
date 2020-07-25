@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Rowdies:wght@700&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap");
 
 * {
   padding: 0;
@@ -45,6 +45,8 @@ form input {
   box-shadow: inset 8px 8px 16px #41687f, inset -8px -8px 16px #75bee7;
   padding:0 10px;
   letter-spacing: 1px;
+  font-family: "Roboto Mono", monospace;
+  font-size: 1.2rem;
 }
 
 

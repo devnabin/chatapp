@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="room.css" />
-    <link rel="shortcut icon" href="./link.svg" type="image/x-icon">
+    <link rel="stylesheet" href="chatroom.css" />
+    <link rel="shortcut icon" href="./link.svg" type="image/x-icon" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
@@ -18,51 +18,63 @@
   <body>
     <!-- <h1>Chat application</h1> -->
     <div class="info">
-      <div id="groupName">We4Techy</div>
-      <div id="online">
-        <ul>
-          <li id="onlinestatus">Online (<span>5</span>)</li>
-          <div class="test">
-            <ul>
-              <li>
-                <span>Nabin Bhandari</span>
-                <span class="material-icons">
-                  stop_circle
-                </span>
-              </li>
-              <li>
-                <span>Bi shyam</span>
-                <span class="material-icons">
-                  stop_circle
-                </span>
-              </li>
-              <li>
-                <span>sdfsfdbin</span>
-                <span class="material-icons">
-                  stop_circle
-                </span>
-              </li>
-
-              <li>
-                <div>
-                  arfi sdfsdfsdf
-                  <span class="material-icons">
-                    stop_circle
-                  </span>
-                </div>
-              </li>
-
-              <li>
-                <div>
-                  arfi sdfsdfsdf
-                  <span class="material-icons">
-                    stop_circle
-                  </span>
-                </div>
-              </li>
-            </ul>
+      <div class="room-name-div">
+        <div>
+          <div>
+            <span>powesoft</span>
+            <span id="room">room</span>
           </div>
-        </ul>
+        </div>
+      </div>
+
+      <div class="chat-info-div">
+        <div class="headings">
+          <h3>
+            <span id="underline">Active user</span>
+          </h3>
+        </div>
+        <div class="users">
+          <ul>
+            <li>
+              <div>
+                <div id="user">
+                  nabin Bhandari
+                </div>
+                <div id="greendot">
+                  <span class="material-icons">
+                    stop_circle
+                  </span>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="active-groups">
+        <div class="headings">
+          <h3>
+            <span id="underline">
+              Active Rooms
+            </span>
+          </h3>
+        </div>
+        <div class="users">
+          <ul>
+            <li>
+              <div>
+                <div id="user">
+                  binChat
+                </div>
+                <div id="greendot">
+                  <span class="material-icons">
+                    stop_circle
+                  </span>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="chat">
@@ -71,7 +83,14 @@
 
       <div class="makemessage">
         <form action="" id="message-form">
-          <input type="text" placeholder="Reply" name="msg" id="msg-field" required autocomplete="off" />
+          <input
+            type="text"
+            placeholder="Reply"
+            name="msg"
+            id="msg-field"
+            required
+            autocomplete="off"
+          />
           <button id="send-but">
             <i class="fa fa-send"></i>
           </button>
@@ -83,7 +102,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Template for message -->
     <script id="message-template" type="text/html">
       <div class="dynamic">
@@ -102,11 +121,26 @@
         </div>
     </script>
 
-    <!-- USER  JOIN LEFt -->
+    <!-- USER  JOIN  or LEFt -->
     <script id="user-activity" type="text/html">
       <div class="dynamic">
       <p class="%activitycolor%"> {{message}} <span class="time"> {{createdAt}} </span></p>
       </div>
+    </script>
+
+    <!-- template for user online list -->
+    <script>
+      <ul>
+        {{#users}}
+
+        {{/users}}
+        </ul>
+        <ul>
+              <li>
+                <span>Nabin Bhandari</span>
+
+              </li>
+            </ul>
     </script>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -121,4 +155,3 @@
 
   <script src="app.js"></script>
 </html>
-

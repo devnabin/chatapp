@@ -104,3 +104,20 @@ socket.emit('join' , userData , (log)=>{
     window.location.href ='/'
   }
 })
+
+
+//socket
+let a=0;
+
+
+socket.on('roomData' , ({room , users})=>{
+  // let count = 0
+  // if(a==0){
+  //   document.querySelector('#groupName').textContent = room
+  //   a++;
+  // }
+  // user.forEach(element => {
+  //   count ++;
+  // });
+  // document.querySelector('#onlineCount').textContent = count
+})

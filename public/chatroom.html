@@ -21,7 +21,7 @@
       <div class="room-name-div">
         <div>
           <div>
-            <span>powesoft</span>
+            <span id="groupName"></span>
             <span id="room">room</span>
           </div>
         </div>
@@ -33,8 +33,8 @@
             <span id="underline">Active user</span>
           </h3>
         </div>
-        <div class="users">
-          <ul>
+        <div class="users" id="addusers">
+          <!-- <ul>
             <li>
               <div>
                 <div id="user">
@@ -47,7 +47,7 @@
                 </div>
               </div>
             </li>
-          </ul>
+          </ul> -->
         </div>
       </div>
 
@@ -59,8 +59,8 @@
             </span>
           </h3>
         </div>
-        <div class="users">
-          <ul>
+        <div class="users" id="addrooms">
+          <!-- <ul>
             <li>
               <div>
                 <div id="user">
@@ -73,7 +73,7 @@
                 </div>
               </div>
             </li>
-          </ul>
+          </ul> -->
         </div>
       </div>
     </div>
@@ -128,20 +128,45 @@
       </div>
     </script>
 
-    <!-- template for user online list -->
-    <script>
-      <ul>
-        {{#users}}
-
-        {{/users}}
-        </ul>
-        <ul>
-              <li>
-                <span>Nabin Bhandari</span>
-
-              </li>
-            </ul>
+    <!-- template for user online list and active chat rooms in server -->
+    <!-- active user list -->
+   <script id="user-online-templates" type="text/html">
+            <ul>
+              {{#users}}
+            <li>
+              <div>
+                <div id="user">
+                 {{username}}
+                </div>
+                <div id="greendot">
+                  <span class="material-icons">
+                    stop_circle
+                  </span>
+                </div>
+              </div>
+            </li>
+            {{/users}}
+          </ul>
     </script>
+<!-- active chat room list -->
+    <script id="active-room-templates" type="text/html">
+      <ul>
+        {{#rooms}}
+      <li>
+        <div>
+          <div id="user">
+           {{room}}
+          </div>
+          <div id="greendot">
+            <span class="material-icons">
+              stop_circle
+            </span>
+          </div>
+        </div>
+      </li>
+      {{/rooms}}
+    </ul>
+</script>
 
     <script src="/socket.io/socket.io.js"></script>
 

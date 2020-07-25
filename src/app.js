@@ -9,7 +9,13 @@ const {
   url: generateUrl,
 } = require("./utils/message");
 
-const { addUser, removeUser, getUser, getUserInRoom } = require("./utils/user");
+const {
+  addUser,
+  removeUser,
+  getUser,
+  getUserInRoom,
+  getRooms,
+} = require("./utils/user");
 
 const PORT = process.env.PORT || 3000;
 
@@ -82,6 +88,11 @@ now we are using rooms in sockets so we have more on the list
     io.to(user.room).emit("roomData", {
       room: user.room,
       users: getUserInRoom(user.room),
+      rooms: getRooms(),
+    });
+
+    io.emit("activeRoom", {
+      rooms: getRooms(),
     });
 
     callback();
@@ -124,11 +135,14 @@ now we are using rooms in sockets so we have more on the list
         generateMessage(user.username, ` ${user.username} left the chat`)
       );
 
-      
-    io.to(user.room).emit('roomData' , {
-      room : user.room,
-      users : getUserInRoom(user.room)
-    } )
+      io.to(user.room).emit("roomData", {
+        room: user.room,
+        users: getUserInRoom(user.room),
+      });
+
+      io.emit("activeRoom", {
+        rooms: getRooms(),
+      });
     }
   });
   /* 

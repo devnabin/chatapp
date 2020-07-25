@@ -5,19 +5,23 @@ const $formInput = document.querySelector("#msg-field");
 const $locationShareBut = document.querySelector("#location-share-but");
 //messages
 const $messages = document.querySelector("#messages");
+const $activeUser = document.querySelector("#addusers");
+const $activeRoom = document.querySelector("#addrooms");
 
 //templates
 const messageTemplate = document.querySelector("#message-template").innerHTML;
 const urlTemplate = document.querySelector("#url-template").innerHTML;
 const activity = document.querySelector("#user-activity").innerHTML;
+const activeUser = document.querySelector("#user-online-templates").innerHTML;
+const activeRoom = document.querySelector("#active-room-templates").innerHTML;
 
 const socket = io();
 
 //defense code for server emit when user is connected
-socket.on("message", ({username, message, createdAt }) => {
+socket.on("message", ({ username, message, createdAt }) => {
   console.log(message);
   const html = Mustache.render(messageTemplate, {
-   username,
+    username,
     message,
     createdAt: moment(createdAt).format("HH:mm a"),
     // for moment visit https://momentjs.com/docs/
@@ -25,7 +29,7 @@ socket.on("message", ({username, message, createdAt }) => {
   $messages.insertAdjacentHTML("beforeend", html);
 });
 
-socket.on("userActivity", ({username ,  message, createdAt }) => {
+socket.on("userActivity", ({ username, message, createdAt }) => {
   let html;
   html = Mustache.render(activity, {
     username,
@@ -40,8 +44,7 @@ socket.on("userActivity", ({username ,  message, createdAt }) => {
   $messages.insertAdjacentHTML("beforeend", html);
 });
 
-
-socket.on("locationMessage", ({ username ,  url, createdAt }) => {
+socket.on("locationMessage", ({ username, url, createdAt }) => {
   // console.log(url)
   const html = Mustache.render(urlTemplate, {
     username,
@@ -50,7 +53,6 @@ socket.on("locationMessage", ({ username ,  url, createdAt }) => {
   });
   $messages.insertAdjacentHTML("beforeend", html);
 });
-
 
 //making emit from browser when we make a event
 $form.addEventListener("submit", (e) => {
@@ -72,7 +74,6 @@ $form.addEventListener("submit", (e) => {
   e.target.elements.msg.value = "";
 });
 
-
 $locationShareBut.addEventListener("click", () => {
   if (!navigator.geolocation) {
     return alert("Your device is not supported geo location");
@@ -93,31 +94,38 @@ $locationShareBut.addEventListener("click", () => {
   });
 });
 
-
 //===================================================
 
 //options
-const userData = Qs.parse(location.search, { ignoreQueryPrefix : true })
-socket.emit('join' , userData , (log)=>{
-  if(log){
-    alert(log)
-    window.location.href ='/'
+const userData = Qs.parse(location.search, { ignoreQueryPrefix: true });
+socket.emit("join", userData, (log) => {
+  if (log) {
+    alert(log);
+    window.location.href = "/";
   }
-})
-
+});
 
 //socket
-let a=0;
+let a = 0;
+
+socket.on("roomData", ({ room, users }) => {
+  document.querySelector("#groupName").textContent = room;
+  const html  = Mustache.render(activeUser,{
+    users
+  })
+  $activeUser.innerHTML  = html;
+});
 
 
-socket.on('roomData' , ({room , users})=>{
-  // let count = 0
-  // if(a==0){
-  //   document.querySelector('#groupName').textContent = room
-  //   a++;
-  // }
-  // user.forEach(element => {
-  //   count ++;
-  // });
-  // document.querySelector('#onlineCount').textContent = count
+socket.on('activeRoom' , ({rooms})=>{
+  // rooms = rooms.filter((args) => args !== room);
+  let moreRooms = []
+    rooms.forEach(element => {
+      moreRooms.push({room : element})
+    });
+    html  = Mustache.render(activeRoom,{
+      rooms : moreRooms
+    })
+    console.log(moreRooms)
+    $activeRoom.innerHTML  = html;
 })

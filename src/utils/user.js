@@ -1,7 +1,7 @@
 //user in array form
 const users = [];
 
-//adduser , removeuser , getUser , getUserinRoom
+//adduser , removeuser , getUser , getUserinRoom , getrooms
 //1 , adduser
 const addUser = ({ id, username, room }) => {
   //clean the data
@@ -55,31 +55,45 @@ const getUserInRoom = (room) => {
 };
 
 
+//5. getrooms
+const getRooms = ()=>{
+  const rooms = []
+  users.forEach(args =>{
+    if(!rooms.includes(args.room)){
+      rooms.push(args.room)
+    }
+  })
+  return rooms
+}
+
 module.exports= {
     addUser , 
     removeUser,
     getUser,
     getUserInRoom,
+    getRooms
 }
 
-/*
+
 //Testing above 4 functions
 
 //===========
 // creating user 
-addUser({ id: 1, username: "nabin", room: "my room" });
-addUser({ id: 2, username: "nasdin", room: "my" });
-addUser({ id: 3, username: "ninja", room: "my room" });
+// addUser({ id: 1, username: "nabin", room: "my room" });
+// addUser({ id: 2, username: "nasdin", room: "my" });
+// addUser({ id: 3, username: "ninja", room: "my room" });
 // console.log(users);
 
 //remove user
-removeUser(3)
+// removeUser(3)
 // console.log(users);
 
 //getuser
 // console.log(getUser(2))
 
 //getuserinroom
-console.log(getUserInRoom('my'))
+// console.log(getUserInRoom('my'))
 
-*/
+
+// console.log(users)
+// console.log(getRooms())

@@ -15,11 +15,70 @@ const activity = document.querySelector("#user-activity").innerHTML;
 const activeUser = document.querySelector("#user-online-templates").innerHTML;
 const activeRoom = document.querySelector("#active-room-templates").innerHTML;
 
+
+//--------- auto scroll
+const autoScroll = () => {
+  //new message
+  const $newMessage = $messages.lastElementChild;
+
+
+  //height of the new messagec
+  const newMessageStyles = getComputedStyle($newMessage);
+  const newMessageMargin = parseInt(newMessageStyles.marginBottom);
+  const newMessageHeight = $newMessage.offsetHeight + newMessageMargin;
+  // console.log(newMessageStyles)
+  // console.log(newMessageMargin);
+  // console.log('newMessageHeight' , newMessageHeight);
+
+
+  //visable height
+  const visableHeight = $messages.offsetHeight;
+  // console.log('visableHeight' , visableHeight)
+
+
+  //height of messages container
+  const containerHeight = $messages.scrollHeight;
+  // console.log('containerHeight' , containerHeight)
+
+
+  //how far i have scroll
+  const scrolloffSet = $messages.scrollTop + visableHeight;
+  // console.log('scrolloffSet' , scrolloffSet)
+
+
+  
+  if (containerHeight - newMessageHeight <= scrolloffSet) {
+    // console.log(`containerHeight - newMessageHeight <= scrolloffSet`)
+    // console.log(containerHeight + '-' + newMessageHeight + '<=' + scrolloffSet)
+    // console.log("yes");
+    // console.log("both sub", containerHeight - newMessageHeight);
+    // console.log( '<=' ,scrolloffSet);
+    $messages.scrollTop = $messages.scrollHeight;
+    //this one line can keep user down the bottom
+  } 
+  // else {
+  //   console.log("not working");
+  //   console.log(`containerHeight - newMessageHeight <= scrolloffSet`)
+  //   console.log(containerHeight + '-' + newMessageHeight + '<=' + scrolloffSet)
+  //   console.log("both sub", containerHeight - newMessageHeight);
+
+  //   // console.log(scrolloffSet);
+  // }
+};
+
+// setInterval(() => {
+//   autoScroll();
+// }, 10000);
+
+
+// --------- auto scroll />
+
+
 const socket = io();
 
 //defense code for server emit when user is connected
 socket.on("message", ({ username, message, createdAt }) => {
-  console.log(message);
+  // console.log(message);
   const html = Mustache.render(messageTemplate, {
     username,
     message,
@@ -27,6 +86,8 @@ socket.on("message", ({ username, message, createdAt }) => {
     // for moment visit https://momentjs.com/docs/
   });
   $messages.insertAdjacentHTML("beforeend", html);
+
+  autoScroll();
 });
 
 socket.on("userActivity", ({ username, message, createdAt }) => {
@@ -42,6 +103,8 @@ socket.on("userActivity", ({ username, message, createdAt }) => {
     html = html.replace("%activitycolor%", "join");
   }
   $messages.insertAdjacentHTML("beforeend", html);
+
+  autoScroll();
 });
 
 socket.on("locationMessage", ({ username, url, createdAt }) => {
@@ -52,6 +115,8 @@ socket.on("locationMessage", ({ username, url, createdAt }) => {
     createdAt: moment(createdAt).format("HH:mm a"),
   });
   $messages.insertAdjacentHTML("beforeend", html);
+
+  autoScroll();
 });
 
 //making emit from browser when we make a event
@@ -69,7 +134,7 @@ $form.addEventListener("submit", (e) => {
     if (error) {
       return console.log(error);
     }
-    console.log("message is delivered");
+    // console.log("message is delivered");
   });
   e.target.elements.msg.value = "";
 });
@@ -89,7 +154,7 @@ $locationShareBut.addEventListener("click", () => {
     };
     socket.emit("location", coords, () => {
       $locationShareBut.removeAttribute("disabled");
-      console.log("location shared");
+      // console.log("location shared");
     });
   });
 });
@@ -125,6 +190,5 @@ socket.on("activeRoom", ({ rooms }) => {
   html = Mustache.render(activeRoom, {
     rooms: moreRooms,
   });
-  console.log(moreRooms);
   $activeRoom.innerHTML = html;
 });

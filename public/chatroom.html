@@ -130,43 +130,43 @@
 
     <!-- template for user online list and active chat rooms in server -->
     <!-- active user list -->
-   <script id="user-online-templates" type="text/html">
-            <ul>
-              {{#users}}
-            <li>
-              <div>
-                <div id="user">
-                 {{username}}
-                </div>
-                <div id="greendot">
-                  <span class="material-icons">
-                    stop_circle
-                  </span>
-                </div>
-              </div>
-            </li>
-            {{/users}}
-          </ul>
+    <script id="user-online-templates" type="text/html">
+        <ul>
+          {{#users}}
+        <li>
+          <div>
+            <div id="user">
+             {{username}}
+            </div>
+            <div id="greendot">
+              <span class="material-icons">
+                stop_circle
+              </span>
+            </div>
+          </div>
+        </li>
+        {{/users}}
+      </ul>
     </script>
-<!-- active chat room list -->
+    <!-- active chat room list -->
     <script id="active-room-templates" type="text/html">
-      <ul>
-        {{#rooms}}
-      <li>
-        <div>
-          <div id="user">
-           {{room}}
+        <ul>
+          {{#rooms}}
+        <li>
+          <div>
+            <div id="user">
+             {{room}}
+            </div>
+            <div id="greendot">
+              <span class="material-icons">
+                stop_circle
+              </span>
+            </div>
           </div>
-          <div id="greendot">
-            <span class="material-icons">
-              stop_circle
-            </span>
-          </div>
-        </div>
-      </li>
-      {{/rooms}}
-    </ul>
-</script>
+        </li>
+        {{/rooms}}
+      </ul>
+    </script>
 
     <script src="/socket.io/socket.io.js"></script>
 

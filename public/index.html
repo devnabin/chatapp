@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" type="stylesheet/css" href="/style.css" />
     <meta charset="UTF-8" />
+    <link rel="shortcut icon" href="./link.svg" type="image/x-icon">
+    <link rel="stylesheet" href="./style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Chat</title>
   </head>
   <body>
-    <h1>Chat application</h1>
-
-    <form action="" id="message-form">
-      <input type="text" name="msg" id="msg-field" />
-      <button id="send-but">send</button>
+      <form action="/chatroom.html">
+      <label for="">User Name</label>
+      <br />
+      <input type="text" name="username" id="" required autocomplete="off"/>
+      <br /><br /><br>
+      <label for="">Room</label>
+      <br />
+      <input type="text" name="room" id=""  required autocomplete="off"/>
+      <br /><br />
+      <button>Join</button>
     </form>
-    <button id="location-share-but">Share Your Location</button>
-    <script src="/socket.io/socket.io.js"></script>
   </body>
-  <script src="app.js"></script>
 </html>
+

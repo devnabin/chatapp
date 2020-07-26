@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="chatroom.css" />
+    <link rel="shortcut icon" href="./link.svg" type="image/x-icon" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <title>Chat</title>
+  </head>
+  <body>
+    <!-- <h1>Chat application</h1> -->
+    <div class="info">
+      <div class="room-name-div">
+        <div>
+          <div>
+            <span id="groupName"></span>
+            <span id="room">room</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-info-div">
+        <div class="headings">
+          <h3>
+            <span id="underline">Active user</span>
+          </h3>
+        </div>
+        <div class="users" id="addusers">
+          <!-- <ul>
+            <li>
+              <div>
+                <div id="user">
+                  nabin Bhandari
+                </div>
+                <div id="greendot">
+                  <span class="material-icons">
+                    stop_circle
+                  </span>
+                </div>
+              </div>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+
+      <div class="active-groups">
+        <div class="headings">
+          <h3>
+            <span id="underline">
+              Active Rooms
+            </span>
+          </h3>
+        </div>
+        <div class="users" id="addrooms">
+          <!-- <ul>
+            <li>
+              <div>
+                <div id="user">
+                  binChat
+                </div>
+                <div id="greendot">
+                  <span class="material-icons">
+                    stop_circle
+                  </span>
+                </div>
+              </div>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <div class="chat">
+      <!-- div for rendring dynamic content -->
+      <div id="messages"></div>
+
+      <div class="makemessage">
+        <form action="" id="message-form">
+          <input
+            type="text"
+            placeholder="Reply"
+            name="msg"
+            id="msg-field"
+            required
+            autocomplete="off"
+          />
+          <button id="send-but">
+            <i class="fa fa-send"></i>
+          </button>
+        </form>
+        <div>
+          <button id="location-share-but">
+            <i class="material-icons" style="font-size: 36px;">location_on</i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Template for message -->
+    <script id="message-template" type="text/html">
+      <div class="dynamic">
+        <p><span class="name">{{username}}</span><span class="time"> {{createdAt}} </span></p>
+      <p>
+        {{message}}
+      </p>
+      </div>
+    </script>
+
+    <!-- template for my loaction -->
+    <script id="url-template" type="text/html">
+        <div class="dynamic">
+        <p><span class="name">{{username}}</span><span class="time"> {{createdAt}} </span></p>
+      <p> <a href="{{url}}" target="_blank">my location</a></p>
+        </div>
+    </script>
+
+    <!-- USER  JOIN  or LEFt -->
+    <script id="user-activity" type="text/html">
+      <div class="dynamic">
+      <p class="%activitycolor%"> {{message}} <span class="time"> {{createdAt}} </span></p>
+      </div>
+    </script>
+
+    <!-- template for user online list and active chat rooms in server -->
+    <!-- active user list -->
+    <script id="user-online-templates" type="text/html">
+        <ul>
+          {{#users}}
+        <li>
+          <div>
+            <div id="user">
+             {{username}}
+            </div>
+            <div id="greendot">
+              <span class="material-icons">
+                stop_circle
+              </span>
+            </div>
+          </div>
+        </li>
+        {{/users}}
+      </ul>
+    </script>
+    <!-- active chat room list -->
+    <script id="active-room-templates" type="text/html">
+        <ul>
+          {{#rooms}}
+        <li>
+          <div>
+            <div id="user">
+             {{room}}
+            </div>
+            <div id="greendot">
+              <span class="material-icons">
+                stop_circle
+              </span>
+            </div>
+          </div>
+        </li>
+        {{/rooms}}
+      </ul>
+    </script>
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- rendring content in ui using mustache -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+    <!-- moment is used to extract date and time stamps -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <!-- qs for quary string -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
+  </body>
+
+  <script src="app.js"></script>
+</html>

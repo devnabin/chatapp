@@ -1,0 +1,218 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto Mono", monospace;
+}
+
+html {
+  font-size: 8px;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  background-color: rgb(245, 240, 240);
+  display: flex;
+}
+
+.left {
+  color: red;
+}
+
+.join {
+  color: green;
+}
+
+/* start info div */
+
+/* green logo */
+.info .material-icons {
+  color: rgb(5, 219, 5);
+  font-size: 1.3rem;
+}
+
+body .info {
+  height: 100vh;
+  width: 30%;
+  background-color: blueviolet;
+  position: relative;
+}
+
+/* small tags */
+
+ul {
+  list-style: none;
+}
+ul li:hover {
+  border-radius: 50px;
+  background-color: #fff;
+  color: blueviolet;
+}
+
+/* top 123 */
+/* top 1 {.room-name-div} div in info div */
+
+.info .room-name-div {
+  height: 10%;
+  font-size: 3rem;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.info .room-name-div div {
+  position: relative;
+}
+
+.info .room-name-div div #room {
+  font-size: 2rem;
+  color: rgb(214, 213, 213);
+  position: absolute;
+  left: 0;
+  top: -15px;
+}
+
+/* top 2 {chat-info-div} div in info div  */
+
+.info .chat-info-div {
+  height: 45%;
+  /* font-size: 2rem; */
+  position: relative;
+}
+
+.users {
+  height: 90%;
+  font-size: 2rem;
+  overflow-y: scroll;
+  color: white;
+  padding: 10px 10px;
+}
+.users div {
+  width: 100%;
+  height: 3vh;
+  display: flex;
+  overflow: hidden;
+  padding: 0 5px;
+}
+
+.users div #user {
+  width: 90%;
+  height: 100%;
+}
+
+.users div #greendot {
+  width: 10%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.info .active-groups {
+  height: 45%;
+  /* background: orange; */
+}
+
+.headings {
+  text-align: center;
+  height: 10%;
+  font-size: 1.6rem;
+  color: white;
+}
+
+#underline {
+  padding: 0 10px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgb(218, 218, 218);
+}
+
+.users::-webkit-scrollbar {
+  width: 10px;
+}
+
+.users::-webkit-scrollbar-thumb {
+  /* background:rgba(216, 215, 215, 0.63); */
+  background: rgba(255, 255, 255, 0.39);
+  border-radius: 50px;
+}
+
+/* close info */
+
+body .chat {
+  height: 100vh;
+  width: 70%;
+  position: relative;
+}
+
+/* send button wola div  */
+.makemessage {
+  width: 100%;
+  display: flex;
+  position: absolute;
+  bottom: 5vh;
+  padding: 0 20px;
+}
+
+form {
+  width: 100%;
+  display: flex;
+}
+
+input {
+  flex-grow: 1;
+  box-shadow: 0 0 10px 2px blueviolet;
+  border-radius: 10px;
+  padding: 0 10px;
+}
+
+button,
+input {
+  background: none;
+  border: none;
+  outline: none;
+}
+
+button {
+  margin-left: 10px;
+  cursor: pointer;
+  background: blueviolet;
+  color: #fff;
+  height: 5vh;
+  width: 5vh;
+}
+
+/* dymaic content customization */
+
+#messages {
+  font-size: 2rem;
+  height: 85vh;
+  padding: 20px 0 0 15px;
+  overflow-y: scroll;
+}
+
+
+#messages::-webkit-scrollbar {
+  width: 10px;
+}
+
+#messages::-webkit-scrollbar-thumb {
+  background: blueviolet;
+  border-radius: 50px;
+}
+
+.dynamic {
+  margin-bottom: 5px;
+}
+
+.dynamic .name {
+  background: blueviolet;
+  color: white;
+  padding: 0 5px;
+}
+.dynamic .time {
+  font-weight: bold;
+}

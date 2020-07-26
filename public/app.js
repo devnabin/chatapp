@@ -110,22 +110,21 @@ let a = 0;
 
 socket.on("roomData", ({ room, users }) => {
   document.querySelector("#groupName").textContent = room;
-  const html  = Mustache.render(activeUser,{
-    users
-  })
-  $activeUser.innerHTML  = html;
+  const html = Mustache.render(activeUser, {
+    users,
+  });
+  $activeUser.innerHTML = html;
 });
 
-
-socket.on('activeRoom' , ({rooms})=>{
+socket.on("activeRoom", ({ rooms }) => {
   // rooms = rooms.filter((args) => args !== room);
-  let moreRooms = []
-    rooms.forEach(element => {
-      moreRooms.push({room : element})
-    });
-    html  = Mustache.render(activeRoom,{
-      rooms : moreRooms
-    })
-    console.log(moreRooms)
-    $activeRoom.innerHTML  = html;
-})
+  let moreRooms = [];
+  rooms.forEach((element) => {
+    moreRooms.push({ room: element });
+  });
+  html = Mustache.render(activeRoom, {
+    rooms: moreRooms,
+  });
+  console.log(moreRooms);
+  $activeRoom.innerHTML = html;
+});

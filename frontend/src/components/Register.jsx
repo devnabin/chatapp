@@ -1,6 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
+  const navigate = useNavigate();
+
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -8,8 +14,6 @@ function Register() {
     password: "",
     confirmPassword: "",
   });
-
-  const [error, setError] = useState("");
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -38,39 +42,34 @@ function Register() {
 
     // Later, send formData to the backend here.
     try {
-      const response = await fetch('http://127.0.0.1:8000/register', {
-        method: 'POST',
+      const response = await fetch("http://127.0.0.1:8000/register", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json', // Inform server of JSON payload
+          "Content-Type": "application/json", // Inform server of JSON payload
         },
         body: JSON.stringify(formData), // Convert object to JSON string
       });
-    
 
       // if (!response.ok) {
-       // throw new Error('Network response failed.');
+      // throw new Error('Network response failed.');
       // }
 
-    
       const data = await response.json();
 
-      if (response.status == 400){
-        setError(data.detail)
+      if (response.status == 400) {
+        setError(data.detail);
+      } else {
+        setMessage("Registration Completed");
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
       }
-      else{
-        alert('Post created successfully!');
-      }
-      
-      console.log(data)
-      console.log(response)
-      console.log('terminal:', data);
     } catch (err) {
       setError(err.message);
     } finally {
       // console.log('')
     }
   }
-
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-background px-4 text-text">
@@ -177,6 +176,12 @@ function Register() {
             </p>
           )}
 
+          {message && (
+            <p className="rounded-lg bg-green-100 px-3 py-2 text-sm text-green-700">
+              {message}
+            </p>
+          )}
+
           <button
             type="submit"
             className="w-full rounded-lg bg-primary px-4 py-3 font-semibold text-white transition-opacity hover:opacity-85"
@@ -187,7 +192,10 @@ function Register() {
 
         <p className="mt-5 text-center text-sm">
           Already have an account?{" "}
-          <a href="/login" className="font-semibold text-primary hover:underline">
+          <a
+            href="/login"
+            className="font-semibold text-primary hover:underline"
+          >
             Login
           </a>
         </p>

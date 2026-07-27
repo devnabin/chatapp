@@ -6,6 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 import json
 
+from loadFileData import smallDB, UsersLoggedIn
+
 #  for .envs file
 from config import settings 
 
@@ -31,47 +33,68 @@ class Users(BaseModel):
 
 
 
-# database
-# databaseName = 
-activeUsers = []
+# # database
+# # databaseName = 
+# activeUsers = []
 
-try:
-    fs = open(settings.DATABASE, 'rt')
-    activeUsers = fs.read()
-    if activeUsers:
-        activeUsers = json.loads(activeUsers)
-    else:
-        fs = open(settings.DATABASE, 'wt')
-        fs.write('[]')
-        fs.close()
-except:
-    print('somthing went wrong')
-else:
-    print('active users from file', activeUsers)
-    # print(activeUsers)
-    # print(type(activeUsers))
+# try:
+#     fs = open(settings.DATABASE, 'rt')
+#     activeUsers = fs.read()
+#     if activeUsers:
+#         activeUsers = json.loads(activeUsers)
+#     else:
+#         fs = open(settings.DATABASE, 'wt')
+#         fs.write('[]')
+#         fs.close()
+# except:
+#     print('somthing went wrong')
+# else:
+#     print('active users from file', activeUsers)
+#     # print(activeUsers)
+#     # print(type(activeUsers))
 
-finally:
-    fs.close()
+# finally:
+#     fs.close()
 
 
 @app.post('/register', status_code=status.HTTP_201_CREATED)
 async def create_user(user:Users):
-    print("dumppuing*****")
-    user = user.model_dump()
-    print('users', user)
-    print('activeUsers', activeUsers)
-    print(user['username'])
-    is_present = any(user['username'] in list['username'] for list in activeUsers)
-    if is_present:
+
+    def generateError(details, code = status.HTTP_400_BAD_REQUEST):
         raise HTTPException(
-            status_code = status.HTTP_400_BAD_REQUEST,
-            detail = "Username is already taken"
+            status_code = code,
+            detail = details
         )
-    activeUsers.append(user)
-    with open(settings.DATABASE, 'wt') as fs:
-        fs.write(json.dumps(activeUsers))
-    return {"message":"user created sucessrully", "data": user}
+    
+    if user.password != user.confirmPassword: 
+        generateError("Password doesn't matched!")
+
+    if smallDB.checkDetails(user.username, 'username'):
+        generateError("UserName is already taken!")
+
+    if smallDB.checkDetails(user.email, 'email'):
+            generateError("Email is already taken!")
+
+    if smallDB.createUser(user):
+        return {"message":"user created sucessrully", "data": user}
+    else:
+        generateError("Something Went Wrong!")
+
+class loginUser(BaseModel):
+    username:str
+    password:str
+
+
+@app.post("/login", status_code = status.HTTP_200_OK)  
+async def login(user:loginUser):
+    if not smallDB.userLoggin(user):
+        raise HTTPException(
+                    status_code = status.HTTP_404_NOT_FOUND,
+                    detail = "User not found"
+                )
+
+    return {"success" : user}
+
 
 @app.get("/active", status_code = status.HTTP_200_OK)
 def getActiveUsers():

@@ -19,9 +19,11 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route element={<ProtectedRoute />}>
+        <Route path="/home/:username" element={<Dashboard />} />
+
+        {/* <Route element={<ProtectedRoute />}>
                 <Route path="/home/:username" element={<Dashboard />} />
-        </Route>
+        </Route> */}
     </Routes>
     </div>
   )

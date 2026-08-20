@@ -2,6 +2,10 @@ __pycache__
 .env
 database.txt
 
+/backend/Database
+/backend/Python
+/aExtra
+
 # Logs
 logs
 *.log

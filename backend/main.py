@@ -1,4 +1,10 @@
-from fastapi import FastAPI, status, HTTPException
+from fastapi import (
+    FastAPI,
+    HTTPException,
+    WebSocket,
+    WebSocketDisconnect,
+    status,
+)
 
 from pydantic import BaseModel, EmailStr, ValidationError
 
@@ -7,6 +13,9 @@ from fastapi.middleware.cors import CORSMiddleware
 import json
 
 from loadFileData import smallDB, UsersLoggedIn
+from webconnection import manager
+
+from datetime import datetime
 
 #  for .envs file
 from config import settings 
@@ -24,12 +33,54 @@ app.add_middleware(
 
 
 
+@app.websocket("/ws/{username}")
+async def websocket_endpoint(websocket: WebSocket, username: str):
+    await manager.connect(websocket, username)
+    now = datetime.now()
+    current_time = now.strftime("%H:%M")
+    try:
+        while True:
+            # Keep waiting for events from the dashboard
+            data = await websocket.receive_json()
+
+            event_type = data.get("type")
+
+            # Reply to a ping so the frontend knows the server is available
+            if event_type == "ping":
+                await websocket.send_json({
+                    "type": "pong",
+                })
+
+            # data = await websocket.receive_text()
+            # print(manager.getActiveUser())
+            # # await manager.send_personal_message(f"You wrote: {data}", websocket)
+            # message = {"time":current_time,"clientId":username,"message":data}
+            # await manager.broadcast(json.dumps(message))
+            
+    except WebSocketDisconnect:
+        manager.disconnect(websocket, username)
+        # message = {"time":current_time,"clientId":username,"message":"offline"}
+        # await manager.broadcast(json.dumps(message))
+
+
+
+
+@app.get("/active")
+async def get_active_users():
+    return {
+        "activeUsers": manager.getActiveUser()
+    }
+
+
+
 class Users(BaseModel):
     fullName:str
     email:str
     password:str
     username:str
     confirmPassword: str
+
+
 
 
 
@@ -96,12 +147,6 @@ async def login(user:loginUser):
     return {"success" : user}
 
 
-@app.get("/active", status_code = status.HTTP_200_OK)
-def getActiveUsers():
-    tempUser = ''
-    with open("database.txt", 'rt') as fs:
-        tempUser = json.loads(fs.read())
-    return {"activeUsers": tempUser } 
 
 
 @app.get("/")
@@ -109,9 +154,9 @@ async def read_root():
     return {"Hello": "World"}
 
 
-@app.get("/items/{item_id}")
-async def read_item(item_id: int, q: str | None = None, r:str | None = None):
-    return {"item_id": item_id, "q": q, "r": r}
+# @app.get("/items/{item_id}")
+# async def read_item(item_id: int, q: str | None = None, r:str | None = None):
+#     return {"item_id": item_id, "q": q, "r": r}
 
 
 

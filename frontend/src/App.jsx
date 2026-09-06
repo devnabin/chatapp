@@ -1,4 +1,3 @@
-//router
 import {
   Routes,
   Route
@@ -20,7 +19,6 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/home/:username" element={<Dashboard />} />
-
         {/* <Route element={<ProtectedRoute />}>
                 <Route path="/home/:username" element={<Dashboard />} />
         </Route> */}

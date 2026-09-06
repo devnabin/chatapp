@@ -1,12 +1,6 @@
-import { useEffect, useState } from "react";
+import Darkmode from "./Utilities/Darkmode";
 
 function Home() {
-  const [darkMode, setDarkMode] = useState(false);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", darkMode);
-  }, [darkMode]);
-
   return (
     <main className="min-h-screen bg-background text-text transition-colors duration-300">
       <nav className="flex items-center justify-between border-b border-secondary/40 px-6 py-4">
@@ -27,13 +21,8 @@ function Home() {
             Register
           </a>
 
-          <button
-            type="button"
-            onClick={() => setDarkMode((currentMode) => !currentMode)}
-            className="rounded-lg border border-primary px-3 py-2 font-medium text-primary transition-colors hover:bg-primary hover:text-white"
-          >
-            {darkMode ? "Light mode" : "Dark mode"}
-          </button>
+      <Darkmode />
+      
         </div>
       </nav>
 

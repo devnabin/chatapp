@@ -15,6 +15,8 @@
 
 @layer base {
   :root {
+    color-scheme: light;
+
     --text: #080d0a;
     --background: #f2f8f4;
     --primary: #56aa72;
@@ -23,6 +25,8 @@
   }
 
   :root.dark {
+    color-scheme: dark;
+
     --text: #f2f7f4;
     --background: #070d09;
     --primary: #55aa71;
@@ -41,7 +45,20 @@
   }
 
   body {
+    min-height: 100vh;
     margin: 0;
+    color: var(--text);
+    background-color: var(--background);
     font-family: var(--font-sans);
+    transition:
+      color 300ms ease,
+      background-color 300ms ease;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
   }
 }

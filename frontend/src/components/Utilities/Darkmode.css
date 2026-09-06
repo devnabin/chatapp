@@ -1,0 +1,39 @@
+.darkmode-toggle {
+  display: inline-grid;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  place-items: center;
+  border: none;
+  border-radius: 10px;
+  color: #ffffff;
+  background-color: var(--primary);
+  cursor: pointer;
+  transition:
+    background-color 200ms ease,
+    transform 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.darkmode-toggle:hover {
+  color: #ffffff;
+  background-color: var(--primary);
+
+  box-shadow: 0 5px 14px rgb(0 0 0 / 20%);
+  transform: translateY(-1px);
+}
+
+.darkmode-toggle:active {
+  transform: translateY(0);
+}
+
+.darkmode-toggle:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.darkmode-icon {
+  width: 21px;
+  height: 21px;
+  pointer-events: none;
+}

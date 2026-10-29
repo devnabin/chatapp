@@ -1,0 +1,242 @@
+/* Navigation bar */
+
+.dashboard-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 28px;
+  min-height: 78px;
+  padding: 12px 32px;
+  border-bottom: 1px solid color-mix(
+    in srgb,
+    var(--secondary) 55%,
+    transparent
+  );
+  background-color: color-mix(
+    in srgb,
+    var(--background) 96%,
+    var(--secondary) 4%
+  );
+  box-shadow: 0 5px 22px rgb(0 0 0 / 6%);
+  transition:
+    background-color 300ms ease,
+    border-color 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.dashboard-brand {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 0;
+  border: 0;
+  color: var(--primary);
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    opacity 200ms ease,
+    transform 200ms ease;
+}
+
+.dashboard-brand:hover {
+  opacity: 0.82;
+  transform: translateY(-1px);
+}
+
+.dashboard-brand-name {
+  color: var(--primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+/* Greeting and connection status */
+
+.dashboard-user-status {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 30px;
+  min-width: 0;
+}
+
+.dashboard-navbar .dashboard-header {
+  min-width: 0;
+  margin: 0;
+  padding-left: 24px;
+  border-left: 1px solid color-mix(
+    in srgb,
+    var(--secondary) 55%,
+    transparent
+  );
+}
+
+.dashboard-navbar .dashboard-header h1 {
+  overflow: hidden;
+  margin: 0 0 3px;
+  color: var(--text);
+  font-size: 0.96rem;
+  font-weight: 650;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dashboard-navbar .dashboard-header p {
+  overflow: hidden;
+  margin: 0;
+  color: var(--text);
+  font-size: 0.76rem;
+  line-height: 1.2;
+  opacity: 0.56;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Simple connection status */
+
+.dashboard-connection {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 7px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.dashboard-connection-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dashboard-connection-connected {
+  color: #168653;
+}
+
+.dashboard-connection-connected .dashboard-connection-dot {
+  background-color: #22a06b;
+  box-shadow: 0 0 0 3px rgb(34 160 107 / 13%);
+}
+
+.dashboard-connection-disconnected {
+  color: #c43f57;
+}
+
+.dashboard-connection-disconnected .dashboard-connection-dot {
+  background-color: #d64c63;
+  box-shadow: 0 0 0 3px rgb(214 76 99 / 13%);
+}
+
+/* Navbar actions */
+
+/* one pill-shaped toolbar holding profile, theme toggle and logout */
+.dashboard-navbar-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid color-mix(in srgb, var(--secondary) 55%, transparent);
+  border-radius: 9999px;
+  background-color: color-mix(in srgb, var(--secondary) 12%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.dashboard-navbar-divider {
+  width: 1px;
+  height: 20px;
+  margin: 0 4px;
+  background-color: color-mix(in srgb, var(--secondary) 70%, transparent);
+}
+
+.dashboard-nav-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 14px 0 4px;
+  border: 0;
+  border-radius: 9999px;
+  color: var(--text);
+  background-color: transparent;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.dashboard-nav-button:hover {
+  color: var(--primary);
+  background-color: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+.dashboard-avatar {
+  display: inline-grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 9999px;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.dashboard-darkmode {
+  display: flex;
+  align-items: center;
+}
+
+/* dashboard-only override; the shared toggle keeps its look on Home */
+.dashboard-darkmode .darkmode-toggle,
+.dashboard-logout-button {
+  display: inline-grid;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 9999px;
+  color: color-mix(in srgb, var(--text) 70%, transparent);
+  background-color: transparent;
+  cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.dashboard-darkmode .darkmode-toggle:hover {
+  color: var(--primary);
+  background-color: color-mix(in srgb, var(--primary) 12%, transparent);
+  box-shadow: none;
+  transform: rotate(15deg);
+}
+
+.dashboard-darkmode .darkmode-icon,
+.dashboard-logout-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.dashboard-logout-button:hover {
+  color: #d64c63;
+  background-color: rgb(214 76 99 / 12%);
+}
+
+.dashboard-nav-button:focus-visible,
+.dashboard-darkmode .darkmode-toggle:focus-visible,
+.dashboard-logout-button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}

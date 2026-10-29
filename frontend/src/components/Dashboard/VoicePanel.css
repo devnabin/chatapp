@@ -1,0 +1,8 @@
+/* Column 3: reserved */
+
+.dashboard-panel-empty {
+  margin: 16px 18px;
+  color: var(--text);
+  font-size: 0.85rem;
+  opacity: 0.5;
+}

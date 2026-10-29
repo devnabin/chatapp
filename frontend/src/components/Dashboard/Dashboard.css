@@ -1,0 +1,65 @@
+.dashboard-page {
+  min-height: 100vh;
+  color: var(--text);
+  background-color: var(--background);
+  transition:
+    color 300ms ease,
+    background-color 300ms ease;
+}
+
+/* 3-column body */
+
+.dashboard-body {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) 320px;
+  gap: 20px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 32px 32px;
+  height: calc(100vh - 78px);
+}
+
+.dashboard-sidebar,
+.dashboard-chat,
+.dashboard-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border: 1px solid color-mix(
+    in srgb,
+    var(--secondary) 55%,
+    transparent
+  );
+  border-radius: 16px;
+  background-color: color-mix(
+    in srgb,
+    var(--background) 96%,
+    var(--secondary) 4%
+  );
+  overflow: hidden;
+}
+
+.dashboard-sidebar-title,
+.dashboard-panel-title {
+  margin: 0;
+  padding: 16px 18px;
+  border-bottom: 1px solid color-mix(
+    in srgb,
+    var(--secondary) 55%,
+    transparent
+  );
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+@media (max-width: 960px) {
+  .dashboard-body {
+    grid-template-columns: 1fr;
+    height: auto;
+    padding: 16px;
+  }
+}

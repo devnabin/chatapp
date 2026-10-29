@@ -4,7 +4,7 @@ import {
   useParams,
 } from "react-router-dom";
 
-import "./Dashboard.css";
+import "./Chat.css";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import ChatWindow from "./ChatWindow";
@@ -19,7 +19,7 @@ const WS_URL = "ws://127.0.0.1:8000";
 // language for voice input and spoken replies (BCP 47 code, e.g. "en-US", "hi-IN")
 const VOICE_LANGUAGE = "en-US";
 
-function Dashboard() {
+function Chat() {
   const { username } = useParams();
   const navigate = useNavigate();
 
@@ -332,7 +332,7 @@ function Dashboard() {
 
 
   function handleDashboardNavigation() {
-    navigate(`/home/${encodeURIComponent(username)}`);
+    navigate(`/chat/${encodeURIComponent(username)}`);
   }
 
 
@@ -542,4 +542,4 @@ function Dashboard() {
 }
 
 
-export default Dashboard;
+export default Chat;

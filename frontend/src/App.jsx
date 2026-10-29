@@ -7,7 +7,7 @@ import {
 import Home from './components/Home'
 import Register from './components/Register'
 import Login from './components/Login'
-import Dashboard from './components/Dashboard/Dashboard'
+import Chat from './components/Chat/Chat'
 import ProtectedRoute from './components/ProtecterdRoute'
 
 
@@ -18,9 +18,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/home/:username" element={<Dashboard />} />
+        <Route path="/chat/:username" element={<Chat />} />
         {/* <Route element={<ProtectedRoute />}>
-                <Route path="/home/:username" element={<Dashboard />} />
+                <Route path="/chat/:username" element={<Chat />} />
         </Route> */}
     </Routes>
     </div>

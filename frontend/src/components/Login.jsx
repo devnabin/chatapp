@@ -41,7 +41,7 @@ function Login() {
       if (response.ok ){
             setMessage(`Welcome: ${data.success.username}`)
             localStorage.setItem("accessToken", data.success.username);
-            navigate(`/home/${encodeURIComponent(data.success.username)}`);
+            navigate(`/chat/${encodeURIComponent(data.success.username)}`);
             // console.log(typeof(data.username))
       }
 

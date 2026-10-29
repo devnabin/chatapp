@@ -161,6 +161,37 @@
   cursor: not-allowed;
 }
 
+/* dictation mic: ghost circle, glows while listening */
+.chat-form .chat-mic-button {
+  color: color-mix(in srgb, var(--text) 65%, transparent);
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.chat-form .chat-mic-button:hover:not(:disabled) {
+  color: var(--primary);
+  background-color: color-mix(in srgb, var(--primary) 12%, transparent);
+  box-shadow: none;
+}
+
+.chat-form .chat-mic-button-active,
+.chat-form .chat-mic-button-active:hover:not(:disabled) {
+  color: var(--primary);
+  background-color: color-mix(in srgb, var(--primary) 15%, transparent);
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--primary) 60%, transparent),
+    0 0 16px 4px color-mix(in srgb, var(--primary) 45%, transparent);
+  animation: chat-mic-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes chat-mic-pulse {
+  50% {
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--primary) 30%, transparent),
+      0 0 8px 2px color-mix(in srgb, var(--primary) 25%, transparent);
+  }
+}
+
 .chat-send-spinner {
   width: 18px;
   height: 18px;

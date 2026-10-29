@@ -13,6 +13,9 @@ function ChatWindow({
   canSendMessage,
   setMessage,
   isConnected,
+  isDictating,
+  toggle_dictation,
+  canDictate,
 }) {
   return (
         <section className="dashboard-chat">
@@ -82,6 +85,21 @@ function ChatWindow({
               aria-label={messagePlaceholder}
               onChange={(event) => setMessage(event.target.value)}
             />
+
+            <button
+              type="button"
+              className={`chat-mic-button ${isDictating ? "chat-mic-button-active" : ""}`}
+              onClick={toggle_dictation}
+              disabled={!canDictate || !canSendMessage || (isAIChat && isAiLoading)}
+              aria-pressed={isDictating}
+              aria-label={isDictating ? "Stop dictation" : "Dictate message"}
+              title={isDictating ? "Stop dictation" : "Dictate message"}
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="9" y="2" width="6" height="12" rx="3" />
+                <path d="M5 10v1a7 7 0 0 0 14 0v-1M12 18v4M8 22h8" />
+              </svg>
+            </button>
 
             <button
               type="submit"

@@ -95,6 +95,66 @@ function Chat() {
     setIsAutoSpeaking(false);
   }
 
+  // dictation: speech-to-text into the chat input (separate from the voice assistant panel)
+  const [isDictating, setIsDictating] = useState(false);
+  // text already in the input when dictation started; spoken words are appended to it
+  const [dictationBase, setDictationBase] = useState("");
+
+  // sync during render instead of in an effect (https://react.dev/learn/you-might-not-need-an-effect)
+  const [prevTranscript, setPrevTranscript] = useState(transcript);
+  if (transcript !== prevTranscript) {
+    setPrevTranscript(transcript);
+    if (isDictating) {
+      setMessage(dictationBase + transcript);
+    }
+  }
+
+  // the browser can end recognition on its own (silence, Safari); leave dictation mode when it does
+  const [prevListening, setPrevListening] = useState(listening);
+  if (listening !== prevListening) {
+    setPrevListening(listening);
+    if (!listening) {
+      setIsDictating(false);
+    }
+  }
+
+  async function toggle_dictation() {
+    if (isDictating) {
+      setIsDictating(false);
+      resetTranscript();
+      await SpeechRecognition.stopListening();
+      return;
+    }
+
+    if (listening || !browserSupportsSpeechRecognition || !isMicrophoneAvailable) {
+      return;
+    }
+
+    setDictationBase(message.trim() ? `${message.trimEnd()} ` : "");
+    resetTranscript();
+    setIsDictating(true);
+
+    try {
+      await SpeechRecognition.startListening({
+        continuous: browserSupportsContinuousListening,
+        language: VOICE_LANGUAGE,
+      });
+    } catch (error) {
+      console.error("Could not start dictation:", error);
+      setIsDictating(false);
+    }
+  }
+
+  // stop dictating before sending so leftover speech doesn't refill the cleared input
+  function handleChatSubmit(event) {
+    if (isDictating) {
+      setIsDictating(false);
+      resetTranscript();
+      SpeechRecognition.abortListening();
+    }
+    handleSubmit(event);
+  }
+
 
 
   useEffect(() => {
@@ -488,8 +548,7 @@ function Chat() {
         handleProfileNavigation={handleProfileNavigation}
         handleLogout={handleLogout}
       />
-
-
+      
       <div className="dashboard-body">
         {/* Column 1: active users */}
         <Sidebar
@@ -511,27 +570,31 @@ function Chat() {
           displayedMessages={displayedMessages}
           username={username}
           isAiLoading={isAiLoading}
-          handleSubmit={handleSubmit}
+          handleSubmit={handleChatSubmit}
           message={message}
           messagePlaceholder={messagePlaceholder}
           canSendMessage={canSendMessage}
           setMessage={setMessage}
           isConnected={isConnected}
+          isDictating={isDictating}
+          toggle_dictation={toggle_dictation}
+          canDictate={browserSupportsSpeechRecognition && isMicrophoneAvailable && (!listening || isDictating)}
         />
 
         {/* Column 3: reserved for later */}
+        {/* both features share one speech recognizer, so hide dictation activity from the voice panel */}
         <VoicePanel
-          listening={listening}
+          listening={listening && !isDictating}
           ai_response={ai_response}
           browserSupportsTextToSpeech={browserSupportsTextToSpeech}
           isInQueue={isInQueue}
           isAutoSpeaking={isAutoSpeaking}
           stop_speech={stop_speech}
           start={start}
-          isVoiceBusy={isVoiceBusy}
+          isVoiceBusy={isVoiceBusy || isDictating}
           start_audio={start_audio}
           end_audio={end_audio}
-          transcript={transcript}
+          transcript={isDictating ? "" : transcript}
           isConnected={isConnected}
           browserSupportsSpeechRecognition={browserSupportsSpeechRecognition}
           isMicrophoneAvailable={isMicrophoneAvailable}

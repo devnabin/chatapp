@@ -1,7 +1,7 @@
-from fastapi import status, APIRouter
-from pydantic import BaseModel
-from openai import AsyncOpenAI
 from config import settings
+from fastapi import APIRouter, status
+from openai import AsyncOpenAI
+from pydantic import BaseModel
 
 router = APIRouter(
     # prefix = "/ai",
@@ -17,28 +17,46 @@ client = AsyncOpenAI(
 class Msg(BaseModel):
     message : str
 
-@router.post("/chat", status_code = status.HTTP_200_OK)
-async def aichat(message:Msg):
-    print(f'(ai_chat_TEST): user_msg:{message.message}')
-    completion = await client.chat.completions.create(
-        model=settings.DEPLOYMENT_NAME,
-        messages=[
+history = [
             {
                 "role" : "system",
-                "content" : "give answer in plain paragraph donot use markdown structure or any type of structure"
+                "content" : "give answer in plain text donot use markdown structure or any type of symbol while answring"
             },
-            {
+        ]
+
+@router.post("/chat", status_code = status.HTTP_200_OK)
+async def aichat(message:Msg):
+    print(Msg)
+    print(message)
+    user_msg = message.message
+
+    print(user_msg)
+
+    history.append({
                 "role": "user",
-                "content": message.message,
-            }
-        ],
-    )
-    print(f'(ai_chat_TEST): model_response:{completion.choices[0].message.content}')
+                "content": user_msg,
+            })
     
-    return {'reply' : completion.choices[0].message.content}
+
+    print(history)
+
+    completion = await client.chat.completions.create(
+        model=settings.DEPLOYMENT_NAME,
+        messages= history,
+    )
 
 
+    assistant_reply = completion.choices[0].message.content
 
+
+    history.append({
+                "role": "assistant",
+                "content": assistant_reply,
+            })
+
+    print(f'(ai_chat_TEST): model_response:{assistant_reply}')
+    
+    return {'reply' : assistant_reply}
 
 
 

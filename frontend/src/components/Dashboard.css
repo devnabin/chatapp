@@ -199,7 +199,7 @@ color: var(--primary);
 
 .dashboard-body {
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr) 280px;
+  grid-template-columns: 220px minmax(0, 1fr) 320px;
   gap: 20px;
   max-width: 1280px;
   margin: 0 auto;
@@ -529,9 +529,6 @@ color: var(--primary);
   .dashboard-body {
     grid-template-columns: 1fr;
     height: auto;
-  }
-
-  .dashboard-panel {
-    display: none;
+    padding: 16px;
   }
 }

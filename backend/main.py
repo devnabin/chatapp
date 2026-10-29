@@ -1,3 +1,5 @@
+#  for .envs file
+from config import settings
 from fastapi import (
     FastAPI,
     HTTPException,
@@ -6,16 +8,10 @@ from fastapi import (
     status,
 )
 from fastapi.middleware.cors import CORSMiddleware
-
+from loadFileData import UsersLoggedIn, smallDB
 from pydantic import BaseModel, EmailStr, ValidationError
-
-#  for .envs file
-from config import settings 
-
-from loadFileData import smallDB, UsersLoggedIn
-from webconnection import manager
-
 from routes.ai_chat import router as ai_router
+from webconnection import manager
 
 app = FastAPI()
 app.include_router(ai_router)
@@ -42,6 +38,7 @@ app.add_middleware(
 
 
 from fastapi import WebSocket, WebSocketDisconnect
+from voice_assistant import aichat
 
 
 @app.websocket("/ws/{username}")
@@ -49,6 +46,7 @@ async def websocket_endpoint(
     websocket: WebSocket,
     username: str,
 ) -> None:
+    
     await manager.connect(websocket, username)
 
     # print(manager.show_all_active_user)
@@ -80,6 +78,23 @@ async def websocket_endpoint(
                     message_type = event_type
                 )
 
+            # for voice assistant talk
+            # {
+            #             'sender': sender,
+            #             'recipient': recipient,
+            #             'type': message_type,
+            #             'message': message
+            #             }
+            if event_type == "voice_assistant":
+                ai_response = await aichat(data.get('message'), username)
+                value_to_send = {
+                                    "type": "ai_assistant",
+                                    "user" : username,
+                                    "message" : ai_response
+                                }
+                await websocket.send_json(value_to_send)
+                
+
             if event_type == "active_users":
                 await manager.send_all_active_user()
 
@@ -90,7 +105,7 @@ async def websocket_endpoint(
     finally:
         manager.disconnect(websocket, username)
         await manager.send_all_active_user()
-        await manager.broadcast('user diconnected', 'group_message')
+        await manager.broadcast('user diconnected', 'group_message', 'TEST')
 
 # @app.websocket("/ws/{username}")
 # async def websocket_endpoint(websocket: WebSocket, username: str):

@@ -7,6 +7,10 @@ import {
 import "./Dashboard.css";
 import Darkmode from "./Utilities/Darkmode";
 
+// talk
+import { useSpeech } from "react-text-to-speech";
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
+
 const API_URL = "http://127.0.0.1:8000";
 const WS_URL = "ws://127.0.0.1:8000";
 
@@ -29,6 +33,23 @@ function Dashboard() {
   const [aiMessages, setAiMessages] = useState([]);
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [activeUser, setActiveUser] = useState([]);
+
+  // remove this
+  const [ai_response, setAi_response] = useState('Something is wrong')
+
+
+  const {
+    Text, // Component that renders speech text in a <div> and supports standard HTML <div> props
+    speechStatus, // String that stores current speech status
+    isInQueue, // Indicates whether the speech is currently playing or waiting in the queue
+    start, // Function to start the speech or put it in queue
+    pause, // Function to pause the speech
+    stop, // Function to stop the speech or remove it from queue
+  } = useSpeech({
+    text: ai_response,
+    stableText: true, // Enable if 'text' is stable across renders for better performance
+  });
+
 
 
   useEffect(() => {
@@ -110,6 +131,18 @@ function Dashboard() {
 
         if (receivedData.type === "active_users") {
           setActiveUser(receivedData.message);
+        }
+
+        //  {speechStatus !== "started" ? <button onClick={start}>Start</button> : <button onClick={pause}>Pause</button>}
+        // <button onClick={stop}>Stop</button>
+
+        if (receivedData.type === "ai_assistant") {
+          if (receivedData.message){
+            setAi_response(receivedData.message)
+          }
+          if (speechStatus !== "started"){
+            start()
+          }
         }
 
       } catch (error) {
@@ -332,6 +365,39 @@ function Dashboard() {
         : "Select a chat to start messaging";
 
 
+
+
+    // talk
+
+  const {
+    transcript,
+    resetTranscript,
+    listening,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
+
+
+
+  function start_audio(){
+    SpeechRecognition.startListening({continuous:true, language: "en-US"})
+  }
+
+  function end_audio(){
+    if (!transcript){ return; }
+    SpeechRecognition.stopListening()
+
+    const socket = socketRef.current;
+    socket.send(
+        JSON.stringify({
+          type: "voice_assistant",
+          message: transcript,
+        }),
+      );
+    resetTranscript()
+    SpeechRecognition.abortListening()
+  }
+
+
   return (
     <div className="dashboard-page">
       <nav className="dashboard-navbar">
@@ -541,10 +607,31 @@ function Dashboard() {
         </section>
 
         {/* Column 3: reserved for later */}
-        <aside className="dashboard-panel">
-          <h2 className="dashboard-panel-title">Details</h2>
-          <p className="dashboard-panel-empty">Coming soon</p>
-          <div>group msg:</div>
+        <aside className="dashboard-panel" aria-labelledby="voice-title">
+          {/* <div style={{ display: "flex", flexDirection: "column", rowGap: "1rem" }}>
+      <Text />
+      <div style={{ display: "flex", columnGap: "0.5rem" }}>
+        {speechStatus !== "started" ? <button onClick={start}>Start</button> : <button onClick={pause}>Pause</button>}
+        <button onClick={stop}>Stop</button>
+      </div>
+      </div> */}
+
+          <div className="m-auto w-full max-w-lg p-5 text-center sm:p-6">
+            <h2 id="voice-title" className="mb-4 text-2xl font-bold">Voice transcription</h2>
+            <p role="status" className="mb-6 text-text/70">Microphone: {listening ? "on" : "off"}</p>
+            <div className="flex flex-wrap justify-center gap-3">
+              <button type="button" onClick={start_audio} disabled={!browserSupportsSpeechRecognition || listening} className="min-h-11 rounded-lg bg-primary px-5 py-3 font-semibold text-white transition-opacity hover:opacity-85 disabled:opacity-40">Start</button>
+              {/* <button type="button" onClick={end_audio} disabled={!listening} className="min-h-11 rounded-lg border border-primary px-5 py-3 font-semibold text-primary transition-colors hover:bg-primary/10 disabled:opacity-40">Stop</button> */}
+              <button type="button" onClick={end_audio} disabled={!transcript} className="min-h-11 rounded-lg border border-secondary px-5 py-3 font-semibold transition-colors hover:bg-secondary/20 disabled:opacity-40">Reset</button>
+            </div>
+            <p aria-live="polite" className="mt-6 max-h-48 min-h-32 overflow-y-auto whitespace-pre-wrap break-words rounded-xl border border-secondary/50 bg-secondary/10 p-4 leading-relaxed">
+              {transcript || "Your speech will appear here."}
+            </p>
+            {!browserSupportsSpeechRecognition && (
+              <p className="mt-4 text-sm text-text/70">This browser does not support speech recognition.</p>
+            )}
+          </div>
+          {/* <div>group msg:</div>
           {
             JSON.stringify(groupMessages)
           }
@@ -557,8 +644,7 @@ function Dashboard() {
           {
                         JSON.stringify(conversation)
 
-          }
-
+          } */}
         </aside>
       </div>
     </div>

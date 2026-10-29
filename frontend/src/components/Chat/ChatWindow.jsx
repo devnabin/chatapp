@@ -16,6 +16,7 @@ function ChatWindow({
   isDictating,
   toggle_dictation,
   canDictate,
+  messageInputRef,
 }) {
   return (
         <section className="dashboard-chat">
@@ -78,6 +79,7 @@ function ChatWindow({
 
           <form className="chat-form" onSubmit={handleSubmit}>
             <input
+              ref={messageInputRef}
               type="text"
               value={message}
               placeholder={messagePlaceholder}

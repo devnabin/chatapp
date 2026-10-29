@@ -25,6 +25,7 @@ function Chat() {
 
   const socketRef = useRef(null);
   const voiceActionRef = useRef(false);
+  const messageInputRef = useRef(null);
 
   const [isConnected, setIsConnected] = useState(false);
   const [chatType, setChatType] = useState("private_message");
@@ -69,25 +70,34 @@ function Chat() {
   });
 
   const [isAutoSpeaking, setIsAutoSpeaking] = useState(false);
+  // keep a reference so Chrome doesn't garbage-collect the utterance mid-speech
+  const utteranceRef = useRef(null);
 
   // speak each new AI reply automatically with the native API; the library swallows speech errors silently
   useEffect(() => {
-    if (!browserSupportsTextToSpeech || !ai_response || listening) return;
+    // TEMP voice-debug
+    console.log("[voice-debug] effect run", { ai_response, browserSupportsTextToSpeech });
+    if (!browserSupportsTextToSpeech || !ai_response) return;
 
+    const synth = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(ai_response);
     utterance.lang = VOICE_LANGUAGE;
-    utterance.onstart = () => setIsAutoSpeaking(true);
-    utterance.onend = () => setIsAutoSpeaking(false);
+    utterance.onstart = () => { console.log("[voice-debug] onstart"); setIsAutoSpeaking(true); };
+    utterance.onend = () => { console.log("[voice-debug] onend"); setIsAutoSpeaking(false); };
     utterance.onerror = (event) => {
       setIsAutoSpeaking(false);
       console.error("Auto-play speech failed:", event.error);
     };
+    utteranceRef.current = utterance;
 
-    // cancel first: Chrome's speech engine can get stuck after the mic stops
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ai_response]);
+    // Chrome silently drops speak() called right after cancel(), so clear and resume first, then speak a moment later
+    console.log("[voice-debug] synth state before", { speaking: synth.speaking, pending: synth.pending, paused: synth.paused, voices: synth.getVoices().length });
+    if (synth.speaking || synth.pending) synth.cancel();
+    synth.resume();
+    const timer = setTimeout(() => { console.log("[voice-debug] speak() called"); synth.speak(utterance); }, 100);
+
+    return () => clearTimeout(timer);
+  }, [ai_response, browserSupportsTextToSpeech]);
 
   function stop_speech() {
     stop();
@@ -242,6 +252,7 @@ function Chat() {
         // <button onClick={stop}>Stop</button>
 
         if (receivedData.type === "ai_assistant") {
+          console.log("[voice-debug] reply received", receivedData); // TEMP voice-debug
           // backend sends { message: { reply: "..." } }
           const reply = typeof receivedData.message === "string"
             ? receivedData.message
@@ -411,9 +422,17 @@ function Chat() {
   }
 
 
+  // Move the cursor into the message box after picking a chat.
+  // Wait a tick so React has re-rendered and enabled the input first.
+  function focusMessageInput() {
+    setTimeout(() => messageInputRef.current?.focus(), 0);
+  }
+
+
   function handleSelectUser(selectedUsername) {
     setChatType("private_message");
     setRecipient(selectedUsername);
+    focusMessageInput();
   }
 
 
@@ -422,6 +441,7 @@ function Chat() {
     setChatType("group_message");
     // The global room has no single partner, so clear the recipient.
     setRecipient("");
+    focusMessageInput();
   }
 
 
@@ -430,6 +450,7 @@ function Chat() {
     setChatType("ai_chat");
     // The AI chat also has no partner user, so clear the recipient.
     setRecipient("");
+    focusMessageInput();
   }
 
 
@@ -579,6 +600,7 @@ function Chat() {
           isDictating={isDictating}
           toggle_dictation={toggle_dictation}
           canDictate={browserSupportsSpeechRecognition && isMicrophoneAvailable && (!listening || isDictating)}
+          messageInputRef={messageInputRef}
         />
 
         {/* Column 3: reserved for later */}

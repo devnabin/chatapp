@@ -1,4 +1,6 @@
 import "./VoicePanel.css";
+import SessionThought from "./SessionThought";
+
 function VoicePanel({
   listening,
   ai_response,
@@ -14,10 +16,11 @@ function VoicePanel({
   isConnected,
   browserSupportsSpeechRecognition,
   isMicrophoneAvailable,
+  send_thought
 }) {
   return (
         <aside className="dashboard-panel" aria-labelledby="voice-title">
-          <div>
+          <div className="min-h-0 overflow-y-auto">
           <div className="m-auto w-full max-w-lg p-5 text-center sm:p-6">
             <h2 id="voice-title" className="mb-4 text-2xl font-bold">Voice Chat with Bin AI</h2>
             <div className="mb-6 flex items-center justify-center gap-3">
@@ -59,7 +62,7 @@ function VoicePanel({
             )}
           </div>
           <div>
-            {/* # Settings */}
+            <SessionThought send_thought={send_thought} />
           </div>
           </div>
         </aside>

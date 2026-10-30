@@ -12,8 +12,9 @@
 .active-users-empty {
   margin: 8px;
   color: var(--text);
-  font-size: 0.82rem;
-  opacity: 0.55;
+  font-size: 0.8rem;
+  font-weight: 400;
+  opacity: 0.5;
 }
 
 .active-user {
@@ -25,13 +26,16 @@
   border: 0;
   border-radius: 10px;
   background: transparent;
-  color: var(--text);
+  color: color-mix(in srgb, var(--text) 72%, transparent);
   font: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
   text-align: left;
   cursor: pointer;
-  transition: background-color 160ms ease;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
 }
 
 .active-user:hover {
@@ -39,7 +43,7 @@
     in srgb,
     var(--secondary) 30%,
     transparent
-  );
+  );  color: var(--text);
 }
 
 .active-user-selected {
@@ -49,6 +53,7 @@
     transparent
   );
   color: var(--primary);
+  font-weight: 600;
 }
 
 .active-user-dot {
@@ -83,13 +88,16 @@
   border: 0;
   border-radius: 10px;
   background: transparent;
-  color: var(--text);
+  color: color-mix(in srgb, var(--text) 72%, transparent);
   font: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
   text-align: left;
   cursor: pointer;
-  transition: background-color 160ms ease;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
 }
 
 .sidebar-channel:hover {
@@ -97,7 +105,7 @@
     in srgb,
     var(--secondary) 30%,
     transparent
-  );
+  );  color: var(--text);
 }
 
 .sidebar-channel-selected {
@@ -107,6 +115,7 @@
     transparent
   );
   color: var(--primary);
+  font-weight: 600;
 }
 
 .sidebar-channel-icon {
@@ -122,6 +131,7 @@
     var(--secondary) 40%,
     transparent
   );
-  font-size: 0.68rem;
-  font-weight: 700;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }

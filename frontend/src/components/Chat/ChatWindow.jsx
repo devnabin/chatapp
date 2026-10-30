@@ -17,7 +17,12 @@ function ChatWindow({
   toggle_dictation,
   canDictate,
   messageInputRef,
+  user_thoughts
 }) {
+
+  // user_thoughts is a { username: thought } map from the backend
+const recipientThought = recipient ? user_thoughts?.[recipient] : "";
+
   return (
         <section className="dashboard-chat">
           <header className="chat-header">
@@ -29,6 +34,11 @@ function ChatWindow({
               </span>
             )}
             <span>{chatTitle}</span>
+            {recipientThought && (
+              <span className="chat-header-thought" title={recipientThought}>
+                <span className="chat-header-thought-text">{recipientThought}</span>
+              </span>
+            )}
           </header>
 
           <div className="chat-messages">

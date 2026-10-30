@@ -11,8 +11,69 @@
     transparent
   );
   color: var(--text);
-  font-size: 0.98rem;
-  font-weight: 650;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.chat-header-thought {
+  --thought-bg: color-mix(in srgb, var(--secondary) 35%, var(--background));
+  --thought-border: color-mix(in srgb, var(--primary) 22%, transparent);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  max-width: min(60%, 320px);
+  /* push to the far right of the header */
+  margin-left: auto;
+  padding: 5px 12px;
+  border: 1px solid var(--thought-border);
+  border-radius: 14px;
+  background-color: var(--thought-bg);
+  color: color-mix(in srgb, var(--text) 70%, transparent);
+  font-size: 0.8rem;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0;
+  animation: chat-thought-pop 220ms ease-out;
+}
+
+/* two shrinking "thinking" dots trailing back toward the name */
+.chat-header-thought::before,
+.chat-header-thought::after {
+  content: "";
+  position: absolute;
+  border: 1px solid var(--thought-border);
+  border-radius: 50%;
+  background-color: var(--thought-bg);
+}
+
+.chat-header-thought::before {
+  bottom: 1px;
+  left: -9px;
+  width: 7px;
+  height: 7px;
+}
+
+.chat-header-thought::after {
+  bottom: -2px;
+  left: -15px;
+  width: 4px;
+  height: 4px;
+}
+
+.chat-header-thought-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@keyframes chat-thought-pop {
+  from {
+    opacity: 0;
+    transform: translateY(2px) scale(0.96);
+  }
 }
 
 .chat-placeholder {
@@ -72,15 +133,17 @@
 .message-item strong {
   display: block;
   margin-bottom: 3px;
-  color: var(--primary);
-  font-size: 0.74rem;
-  font-weight: 650;
+  color: color-mix(in srgb, var(--primary) 85%, var(--text));
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 
 .message-item p {
   margin: 0;
   font-size: 0.9rem;
-  line-height: 1.45;
+  font-weight: 400;
+  line-height: 1.55;
 }
 
 .chat-form {
@@ -109,6 +172,11 @@
   font: inherit;
   font-size: 0.9rem;
   transition: border-color 200ms ease;
+}
+
+.chat-form input::placeholder {
+  color: color-mix(in srgb, var(--text) 42%, transparent);
+  font-weight: 400;
 }
 
 .chat-form input:focus {

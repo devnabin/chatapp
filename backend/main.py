@@ -78,13 +78,6 @@ async def websocket_endpoint(
                     message_type = event_type
                 )
 
-            # for voice assistant talk
-            # {
-            #             'sender': sender,
-            #             'recipient': recipient,
-            #             'type': message_type,
-            #             'message': message
-            #             }
             if event_type == "voice_assistant":
                 ai_response = await aichat(data.get('message'), username)
                 value_to_send = {
@@ -93,7 +86,11 @@ async def websocket_endpoint(
                                     "message" : ai_response
                                 }
                 await websocket.send_json(value_to_send)
-                
+
+            # User Thoughts event -> save the message -> return to the frontend
+            if event_type == "user_thought":
+                user_thoughts = data.get("message")
+                await manager.save_thoughts(username, user_thoughts)
 
             if event_type == "active_users":
                 await manager.send_all_active_user()

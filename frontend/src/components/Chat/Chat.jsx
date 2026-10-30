@@ -44,6 +44,7 @@ function Chat() {
 
   // remove this
   const [ai_response, setAi_response] = useState("");
+  const [user_thoughts, setUser_thoughts] = useState({});
 
   // talk
   const {
@@ -246,6 +247,11 @@ function Chat() {
 
         if (receivedData.type === "active_users") {
           setActiveUser(receivedData.message);
+        }
+
+        // Handles user thoughts fron backend
+        if (receivedData.type === "user_thoughts") {
+          setUser_thoughts(receivedData.message);
         }
 
         //  {speechStatus !== "started" ? <button onClick={start}>Start</button> : <button onClick={pause}>Pause</button>}
@@ -559,6 +565,13 @@ function Chat() {
     }
   }
 
+// Send user thoughts to backend
+function send_thought(text) {
+  const socket = socketRef.current;
+  if (socket?.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify({ type: "user_thought", message: text }));
+  }
+}
 
   return (
     <div className="dashboard-page">
@@ -601,6 +614,7 @@ function Chat() {
           toggle_dictation={toggle_dictation}
           canDictate={browserSupportsSpeechRecognition && isMicrophoneAvailable && (!listening || isDictating)}
           messageInputRef={messageInputRef}
+          user_thoughts={user_thoughts}
         />
 
         {/* Column 3: reserved for later */}
@@ -620,6 +634,7 @@ function Chat() {
           isConnected={isConnected}
           browserSupportsSpeechRecognition={browserSupportsSpeechRecognition}
           isMicrophoneAvailable={isMicrophoneAvailable}
+          send_thought={send_thought}
         />
       </div>
     </div>

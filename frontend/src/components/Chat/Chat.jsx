@@ -14,8 +14,7 @@ import VoicePanel from "./VoicePanel";
 import { useSpeech } from "react-text-to-speech";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 
-const API_URL = "http://127.0.0.1:8000";
-const WS_URL = "ws://127.0.0.1:8000";
+import { API_URL, WS_URL } from "../../config";
 // language for voice input and spoken replies (BCP 47 code, e.g. "en-US", "hi-IN")
 const VOICE_LANGUAGE = "en-US";
 

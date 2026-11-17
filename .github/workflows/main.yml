@@ -20,11 +20,17 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSHKEY }}
           script: |
-            # Navigate to your project directory (update this path)
+            # Stop at the first failing command, so the GitHub run shows red
+            set -e
+
+            # Navigate to your project directory
             cd /home/ubuntu/chatapp
-            
+
             # Pull the latest code
             git pull origin main
-            
+
             # Rebuild and restart the Docker containers
             docker compose up -d --build
+
+            # Delete old, unused images so the server disk doesn't fill up
+            docker image prune -f

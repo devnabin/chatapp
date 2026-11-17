@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../config";
 
 function Register() {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ function Register() {
 
     // Later, send formData to the backend here.
     try {
-      const response = await fetch("http://127.0.0.1:8000/register", {
+      const response = await fetch(`${API_URL}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // Inform server of JSON payload

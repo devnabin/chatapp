@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.VPS_SSHKEY }}
           script: |
             # Navigate to your project directory (update this path)
-            cd /home/ubuntu/your-project-folder
+            cd /home/ubuntu/chatapp
             
             # Pull the latest code
             git pull origin main
